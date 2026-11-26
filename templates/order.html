@@ -1,59 +1,31 @@
 {% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% from "_status.html" import badge %}
+{% block title %}Order {{ order._id }}{% endblock %}
 {% block content %}
-<h2>Order {{ order._id }}</h2>
-
-<p><b>Cashier:</b> {{ order.cashierName }}<br>
-<b>Order Date:</b> {{ order.orderDateTime | phtime }}<br>
-<b>Status:</b> <span class="status {{ order.status }}">{{ order.status }}</span></p>
-
-<table>
-    <tr>
-        <th>Item</th>
-        <th>Unit Price</th>
-        <th>Quantity</th>
-        <th>Subtotal</th>
-    </tr>
-    {% for li in order.lineItems %}
-    <tr>
-        <td>{{ li.itemName }}</td>
-        <td>&#8369;{{ li.unitPrice }}</td>
-        <td>{{ li.quantity }}</td>
-        <td>&#8369;{{ li.subtotal }}</td>
-    </tr>
-    {% endfor %}
-    <tr>
-        <td colspan="3"><b>Total Amount</b></td>
-        <td><b>&#8369;{{ order.totalAmount }}</b></td>
-    </tr>
-</table>
-
-{% if order.status == "Pending" %}
-<h3>Record Payment</h3>
-<p class="ap">Access Pattern 5: Record payment for order</p>
-<form method="post" action="{{ url_for('pay_order', orderId=order._id) }}">
-    <label>Payment Method:</label>
-    <select name="paymentMethod">
-        <option>Cash</option>
-        <option>GCash</option>
-        <option>Card</option>
-    </select>
-    <label>Amount Paid:</label>
-    <input type="number" name="amountPaid" value="{{ order.totalAmount }}" min="0" step="0.01" required>
-    <button type="submit">Record Payment</button>
-</form>
-{% endif %}
-
-{% if order.payment %}
-<h3>Payment</h3>
-<p><b>Method:</b> {{ order.payment.paymentMethod }}<br>
-<b>Amount Paid:</b> &#8369;{{ "%.2f"|format(order.payment.amountPaid) }}<br>
-<b>Change:</b> &#8369;{{ "%.2f"|format(order.payment.amountPaid - order.totalAmount) }}<br>
-<b>Payment Status:</b> {{ order.payment.paymentStatus }}<br>
-<b>Paid On:</b> {{ order.payment.paymentDateTime | phtime }}</p>
-{% endif %}
-
-{% if order.status == "Completed" %}
-<p><b>Prepared On:</b> {{ order.preparedDateTime | phtime }}<br>
-<b>Completed On:</b> {{ order.completedDateTime | phtime }}</p>
-{% endif %}
+<a class="back-link" href="{{ url_for('orders') }}">{{ icon('arrow-left', 17) }} All orders</a>
+<div class="page-heading page-heading-action"><div><span class="eyebrow">ORDER DETAILS</span><h1>{{ order._id }}</h1><p>{{ order.orderDateTime | phtime }} &nbsp;·&nbsp; Cashier: {{ order.cashierName }}</p></div><div class="order-heading-actions">{{ badge(order.status, True) }}<button type="button" class="button button-outline button-print" data-print-order>{{ icon('printer', 17) }} Print receipt</button></div></div>
+<div class="order-detail-grid">
+    <div class="detail-main">
+        <section class="surface receipt-card" id="printable-receipt"><div class="receipt-print-header"><strong>Brew &amp; Bean</strong><span>COFFEE HOUSE</span><small>Thank you for stopping by!</small></div><div class="surface-heading"><div><span class="eyebrow">YOUR RECEIPT</span><h2>Order summary</h2></div>{{ icon('receipt', 25) }}</div>
+            <div class="receipt-meta"><div><span>Order</span><strong>{{ order._id }}</strong></div><div><span>Date</span><strong>{{ order.orderDateTime | phtime }}</strong></div><div><span>Cashier</span><strong>{{ order.cashierName }}</strong></div><div><span>Status</span><strong>{{ order.status }}</strong></div></div><div class="receipt-lines"><div class="receipt-head"><span>Item</span><span>Amount</span></div>{% for li in order.lineItems %}<div class="receipt-line"><div><strong>{{ li.itemName }}</strong><small>{{ li.quantity }} × &#8369;{{ "%.2f"|format(li.unitPrice) }}</small></div><span>&#8369;{{ "%.2f"|format(li.subtotal) }}</span></div>{% endfor %}</div>
+            <div class="receipt-total"><span>Total</span><strong>&#8369;{{ "%.2f"|format(order.totalAmount) }}</strong></div><p class="receipt-thanks">Made with care. See you again soon! ☕</p>
+        </section>
+        {% if order.status == "Pending" %}
+        <section class="surface payment-card"><div class="surface-heading"><div><span class="eyebrow">CHECKOUT</span><h2>Record payment</h2></div>{{ icon('wallet', 24) }}</div>
+            <p>Once payment is confirmed, this order will appear in the barista queue.</p>
+            <form method="post" action="{{ url_for('pay_order', orderId=order._id) }}" class="payment-form"><div class="form-field"><label for="paymentMethod">Payment method</label><select name="paymentMethod" id="paymentMethod"><option>Cash</option><option>GCash</option><option>Card</option></select></div><div class="form-field"><label for="amountPaid">Amount received</label><input id="amountPaid" type="number" name="amountPaid" value="{{ order.totalAmount }}" min="0" step="0.01" required></div><button type="submit" class="button button-primary">{{ icon('check', 17) }} Confirm payment</button></form>
+        </section>
+        {% endif %}
+    </div>
+    <aside class="detail-aside">
+        <section class="surface side-detail"><span class="eyebrow">PROGRESS</span><h2>Order status</h2><div class="status-steps"><div class="status-step done"><span class="status-step-dot">{{ icon('check', 14) }}</span><div><strong>Order placed</strong><small>Received at the counter</small></div></div><div class="status-step {% if order.status in ['Paid', 'Completed'] %}done{% else %}current{% endif %}" {% if order.status == 'Pending' %}aria-current="step"{% endif %}><span class="status-step-dot">{% if order.status in ['Paid', 'Completed'] %}{{ icon('check', 14) }}{% else %}2{% endif %}</span><div><strong>Payment received</strong><small>{% if order.status == 'Pending' %}Waiting for payment{% else %}Ready for the barista{% endif %}</small></div></div><div class="status-step {% if order.status == 'Completed' %}done{% elif order.status == 'Paid' %}current{% endif %}" {% if order.status == 'Paid' %}aria-current="step"{% endif %}><span class="status-step-dot">{% if order.status == 'Completed' %}{{ icon('check', 14) }}{% else %}3{% endif %}</span><div><strong>Order complete</strong><small>{% if order.status == 'Completed' %}Freshly prepared{% else %}Not finished yet{% endif %}</small></div></div></div></section>
+        {% if order.payment %}
+        <section class="surface side-detail"><span class="eyebrow">PAYMENT DETAILS</span><h2>All settled.</h2><div class="key-value"><span>Method</span><strong>{{ order.payment.paymentMethod }}</strong></div><div class="key-value"><span>Amount received</span><strong>&#8369;{{ "%.2f"|format(order.payment.amountPaid) }}</strong></div><div class="key-value"><span>Change</span><strong>&#8369;{{ "%.2f"|format(order.payment.amountPaid - order.totalAmount) }}</strong></div><div class="key-value"><span>Payment status</span><strong>{{ order.payment.paymentStatus }}</strong></div><div class="key-value"><span>Paid on</span><strong>{{ order.payment.paymentDateTime | phtime }}</strong></div></section>
+        {% endif %}
+        {% if order.status == "Completed" %}
+        <section class="surface side-detail"><span class="eyebrow">COMPLETED</span><h2>Fresh and ready.</h2><div class="key-value"><span>Prepared</span><strong>{{ order.preparedDateTime | phtime }}</strong></div><div class="key-value"><span>Completed</span><strong>{{ order.completedDateTime | phtime }}</strong></div></section>
+        {% endif %}
+    </aside>
+</div>
 {% endblock %}

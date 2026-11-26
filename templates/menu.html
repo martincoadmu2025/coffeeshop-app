@@ -1,32 +1,29 @@
 {% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% from "_product_image.html" import product_image %}
+{% from "_category_picker.html" import category_picker %}
+{% block title %}Menu{% endblock %}
 {% block content %}
-<h2>Menu</h2>
-<p class="ap">Access Pattern 1: List menu items by category</p>
+<div class="page-heading page-heading-action">
+    <div><span class="eyebrow">HANDCRAFTED FAVORITES</span><h1>Our menu.</h1><p>Something good is always brewing. Explore what's on offer today.</p></div>
+    <a href="{{ url_for('new_order', category=category) }}" class="button button-primary">{{ icon('plus', 18) }} New order</a>
+</div>
 
-<form method="get">
-    <label>Category:</label>
-    <input type="text" name="category" value="{{ category }}">
-    <button type="submit">Search</button>
-</form>
+{{ category_picker(category, 'menu', 'menu-category') }}
 
-<table>
-    <tr>
-        <th>Item ID</th>
-        <th>Item Name</th>
-        <th>Category</th>
-        <th>Price</th>
-        <th></th>
-    </tr>
+<div class="listing-heading"><h2>{{ category }}</h2><span>{{ items | length }} item{{ '' if items | length == 1 else 's' }}</span></div>
+<div class="product-grid">
     {% for item in items %}
-    <tr>
-        <td>{{ item._id }}</td>
-        <td>{{ item.itemName }}</td>
-        <td>{{ item.category }}</td>
-        <td>&#8369;{{ item.price }}</td>
-        <td><a href="{{ url_for('menu_item', menuItemId=item._id) }}">View details</a></td>
-    </tr>
+    <article class="product-card">
+        <div class="product-art">{{ product_image(item) }}<span class="photo-corner-label">Crafted fresh</span></div>
+        <div class="product-content">
+            <span class="product-type">{{ item.category }}</span>
+            <h3>{{ item.itemName }}</h3>
+            <div class="product-footer"><span class="product-price">&#8369;{{ "%.2f"|format(item.price) }}</span><a class="inline-action" href="{{ url_for('menu_item', menuItemId=item._id) }}">Details {{ icon('arrow-right', 17) }}</a></div>
+        </div>
+    </article>
     {% else %}
-    <tr><td colspan="5">No available items in this category.</td></tr>
+    <div class="empty-state full-grid"><span class="empty-icon">{{ icon('coffee', 30) }}</span><h3>Nothing on this shelf yet.</h3><p>Try another category to find your next favorite.</p></div>
     {% endfor %}
-</table>
+</div>
 {% endblock %}

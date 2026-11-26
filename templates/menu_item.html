@@ -1,47 +1,38 @@
 {% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% from "_product_image.html" import product_image %}
+{% block title %}{{ item.itemName }}{% endblock %}
 {% block content %}
-<h2>{{ item.itemName }}</h2>
-<p class="ap">Access Pattern 2: Get menu item with ingredients and quantities</p>
-
-<p><b>Item ID:</b> {{ item._id }}<br>
-<b>Category:</b> {{ item.category }}<br>
-<b>Price:</b> &#8369;{{ item.price }}<br>
-<b>Available:</b> {{ "Yes" if item.isAvailable else "No" }}</p>
-
-<table>
-    <tr>
-        <th>Ingredient ID</th>
-        <th>Ingredient</th>
-        <th>Quantity Required</th>
-    </tr>
-    {% for ing in item.ingredients %}
-    <tr>
-        <td>{{ ing.ingredientId }}</td>
-        <td>{{ ing.ingredientName }}</td>
-        <td>{{ ing.quantityRequired }} {{ ing.unit }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-<h3>Current Stock of Ingredients</h3>
-<p class="ap">Access Pattern 3: Get current stock of ingredients</p>
-
-<table>
-    <tr>
-        <th>Ingredient</th>
-        <th>Current Stock</th>
-        <th>Restock Threshold</th>
-        <th>Last Updated</th>
-    </tr>
-    {% for s in stocks %}
-    <tr {% if s.currentStock < s.restockThreshold %}class="low"{% endif %}>
-        <td>{{ s.ingredientName }}</td>
-        <td>{{ s.currentStock }} {{ s.unit }}</td>
-        <td>{{ s.restockThreshold }} {{ s.unit }}</td>
-        <td>{{ s.lastUpdated | phtime }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-<p><a href="{{ url_for('menu', category=item.category) }}">&larr; Back to menu</a></p>
+<a class="back-link" href="{{ url_for('menu', category=item.category) }}">{{ icon('arrow-left', 17) }} Back to menu</a>
+<section class="item-overview">
+    <div class="item-visual">{{ product_image(item, 'item-hero-photo', 'eager') }}<span class="item-visual-label">Made fresh, served warm</span></div>
+    <div class="item-info">
+        <span class="eyebrow">{{ item.category }}</span>
+        <span class="cell-subtle">{{ item._id }}</span>
+        <h1>{{ item.itemName }}</h1>
+        <p>A little comfort in every sip. Explore what goes into this café favorite.</p>
+        <div class="item-price-row"><strong>&#8369;{{ "%.2f"|format(item.price) }}</strong><span class="pill {% if item.isAvailable %}pill-success{% else %}pill-warning{% endif %}">{{ 'On the menu' if item.isAvailable else 'Unavailable' }}</span></div>
+        <a class="button button-primary" href="{{ url_for('new_order', category=item.category) }}">{{ icon('plus', 18) }} Start an order</a>
+    </div>
+</section>
+<section class="content-section">
+    <div class="section-heading"><div><span class="eyebrow">INSIDE THE CUP</span><h2>Made with care.</h2><p>Ingredients used to craft one serving.</p></div></div>
+    <div class="surface table-scroll">
+        <table class="data-table"><thead><tr><th>Ingredient</th><th>Amount per serving</th></tr></thead><tbody>
+        {% for ing in item.ingredients %}
+            <tr><td class="cell-strong">{{ ing.ingredientName }}<span class="cell-subtle">{{ ing.ingredientId }}</span></td><td>{{ ing.quantityRequired }} {{ ing.unit }}</td></tr>
+        {% endfor %}
+        </tbody></table>
+    </div>
+</section>
+<section class="content-section">
+    <div class="section-heading"><div><span class="eyebrow">STOCK CHECK</span><h2>Ingredients on hand.</h2><p>A quick look at the stock behind your drink.</p></div></div>
+    <div class="surface table-scroll">
+        <table class="data-table"><thead><tr><th>Ingredient</th><th>Current stock</th><th>Restock at</th><th>Updated</th></tr></thead><tbody>
+        {% for s in stocks %}
+        <tr><td class="cell-strong">{{ s.ingredientName }}</td><td><strong>{{ s.currentStock }} {{ s.unit }}</strong>{% if s.currentStock < s.restockThreshold %} <span class="pill pill-warning">Low</span>{% endif %}</td><td>{{ s.restockThreshold }} {{ s.unit }}</td><td class="cell-muted">{{ s.lastUpdated | phtime }}</td></tr>
+        {% else %}<tr><td colspan="4" class="cell-empty">No stock information available.</td></tr>{% endfor %}
+        </tbody></table>
+    </div>
+</section>
 {% endblock %}

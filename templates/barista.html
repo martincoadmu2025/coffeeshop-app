@@ -1,37 +1,19 @@
 {% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% from "_status.html" import badge %}
+{% block title %}Barista queue{% endblock %}
 {% block content %}
-<h2>Barista Queue</h2>
-<p class="ap">Access Pattern 8: List and sort paid but unprepared orders (oldest first)</p>
-
-<table>
-    <tr>
-        <th>Order ID</th>
-        <th>Order Date</th>
-        <th>Items</th>
-        <th>Total</th>
-        <th></th>
-    </tr>
+<div class="page-heading page-heading-action"><div><span class="eyebrow">BEHIND THE BAR</span><h1>Barista queue.</h1><p>Good things take care. Paid orders are listed oldest first.</p></div><span class="count-chip">{{ icon('clock', 17) }} {{ orders | length }} to prepare</span></div>
+<div class="queue-grid">
     {% for order in orders %}
-    <tr>
-        <td><a href="{{ url_for('view_order', orderId=order._id) }}">{{ order._id }}</a></td>
-        <td>{{ order.orderDateTime | phtime }}</td>
-        <td>
-            {% for li in order.lineItems %}
-                {{ li.quantity }} x {{ li.itemName }}<br>
-            {% endfor %}
-        </td>
-        <td>&#8369;{{ order.totalAmount }}</td>
-        <td>
-            <form method="post" action="{{ url_for('complete_order', orderId=order._id) }}">
-                <button type="submit">Mark as Completed</button>
-            </form>
-        </td>
-    </tr>
+    <article class="queue-card">
+        <div class="queue-top"><div><span class="eyebrow">UP NEXT</span><h2><a href="{{ url_for('view_order', orderId=order._id) }}">{{ order._id }}</a></h2></div>{{ badge('Paid') }}</div>
+        <div class="queue-time">{{ icon('clock', 17) }} {{ order.orderDateTime | phtime }}</div>
+        <div class="queue-lines">{% for li in order.lineItems %}<div class="queue-line"><span class="queue-quantity">{{ li.quantity }}×</span><span>{{ li.itemName }}</span></div>{% endfor %}</div>
+        <div class="queue-bottom"><strong>&#8369;{{ "%.2f"|format(order.totalAmount) }}</strong><form method="post" action="{{ url_for('complete_order', orderId=order._id) }}"><button type="submit" class="button button-primary">{{ icon('check', 18) }} Complete order</button></form></div>
+    </article>
     {% else %}
-    <tr><td colspan="5">No orders to prepare.</td></tr>
+    <div class="empty-state full-grid"><span class="empty-icon">{{ icon('check', 31) }}</span><h3>All caught up!</h3><p>There are no paid orders waiting to be prepared.</p><a class="button button-outline" href="{{ url_for('new_order') }}">Start a new order</a></div>
     {% endfor %}
-</table>
-
-<p class="note">Clicking "Mark as Completed" runs Access Pattern 6 (deduct from ingredients inventory)
-and Access Pattern 7 (update order status).</p>
+</div>
 {% endblock %}

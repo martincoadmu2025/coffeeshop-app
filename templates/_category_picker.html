@@ -1,0 +1,27 @@
+{% from '_icons.html' import icon %}
+{% macro category_picker(category, endpoint, input_id) -%}
+<section class="category-picker" aria-label="Choose a menu category">
+    <div class="category-picker-top">
+        <div><span class="eyebrow">EXPLORE THE MENU</span><h2>Pick your favorites</h2></div>
+        <span class="category-picker-note">Freshly brewed, just for you</span>
+    </div>
+    <div class="category-picker-bottom">
+        <div class="category-pills" aria-label="Known categories">
+            <a href="{{ url_for(endpoint, category='Hot Coffee') }}" class="category-pill{% if category == 'Hot Coffee' %} is-active{% endif %}" {% if category == 'Hot Coffee' %}aria-current="page"{% endif %}>{{ icon('coffee', 17) }} Hot Coffee</a>
+            {% if category != 'Hot Coffee' %}
+                <span class="category-pill is-active custom-category">{{ icon('leaf', 17) }} {{ category }}</span>
+            {% endif %}
+        </div>
+        <details class="category-other" {% if category != 'Hot Coffee' %}open{% endif %}>
+            <summary>Another category {{ icon('chevron', 16) }}</summary>
+            <form method="get" action="{{ url_for(endpoint) }}" class="category-other-form">
+                <label for="{{ input_id }}">Category name</label>
+                <div class="category-other-fields">
+                    <input id="{{ input_id }}" type="text" name="category" value="{{ category if category != 'Hot Coffee' else '' }}" placeholder="Enter a category" autocomplete="off" required>
+                    <button type="submit" class="button button-primary button-small">Browse {{ icon('arrow-right', 16) }}</button>
+                </div>
+            </form>
+        </details>
+    </div>
+</section>
+{%- endmacro %}

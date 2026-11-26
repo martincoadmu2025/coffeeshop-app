@@ -8,12 +8,11 @@
 from datetime import datetime, timedelta, timezone
 
 import pymongo
-from flask import Flask, flash, redirect, render_template, request, url_for
-
+from flask import * #Flask, flash, redirect, render_template, request, url_for
 import queries
 
-MONGO_URI = "mongodb://localhost:27017/"
-
+#MONGO_URI = "mongodb://localhost:27017/"
+MONGO_URI = "mongodb+srv://cscigroup5:finalproj@csci112finalproj.0uspmip.mongodb.net/"
 app = Flask(__name__)
 app.secret_key = "csci112-group5"
 

@@ -1,26 +1,14 @@
 {% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Inventory{% endblock %}
 {% block content %}
-<h2>Inventory</h2>
-<p class="ap">Access Pattern 9: List ingredients below restock threshold</p>
-
-<table>
-    <tr>
-        <th>Ingredient ID</th>
-        <th>Ingredient</th>
-        <th>Current Stock</th>
-        <th>Restock Threshold</th>
-        <th>Last Updated</th>
-    </tr>
-    {% for ing in lowStock %}
-    <tr class="low">
-        <td>{{ ing._id }}</td>
-        <td>{{ ing.ingredientName }}</td>
-        <td>{{ ing.currentStock }} {{ ing.unit }}</td>
-        <td>{{ ing.restockThreshold }} {{ ing.unit }}</td>
-        <td>{{ ing.lastUpdated | phtime }}</td>
-    </tr>
-    {% else %}
-    <tr><td colspan="5">All ingredients are above the restock threshold.</td></tr>
-    {% endfor %}
-</table>
+<div class="page-heading page-heading-action"><div><span class="eyebrow">KEEPING THINGS STOCKED</span><h1>Inventory.</h1><p>A closer look at ingredients that are running a little low.</p></div><span class="count-chip{% if lowStock %} count-chip-warning{% endif %}">{{ icon('package', 17) }} {{ lowStock | length }} need attention</span></div>
+{% if lowStock %}<div class="notice notice-amber">{{ icon('alert', 19) }} <div><strong>A quick restock would help.</strong><span>These ingredients have fallen below their usual threshold.</span></div></div>{% endif %}
+<section class="surface table-scroll">
+<table class="data-table"><thead><tr><th>Ingredient</th><th>Current stock</th><th>Restock threshold</th><th>Last updated</th><th>Status</th></tr></thead><tbody>
+{% for ing in lowStock %}
+<tr><td class="cell-strong">{{ ing.ingredientName }}<span class="cell-subtle">{{ ing._id }}</span></td><td><strong>{{ ing.currentStock }} {{ ing.unit }}</strong></td><td>{{ ing.restockThreshold }} {{ ing.unit }}</td><td class="cell-muted">{{ ing.lastUpdated | phtime }}</td><td><span class="pill pill-warning">Restock soon</span></td></tr>
+{% else %}<tr><td colspan="5"><div class="empty-inline">{{ icon('check', 22) }} All ingredients are comfortably stocked.</div></td></tr>{% endfor %}
+</tbody></table>
+</section>
 {% endblock %}

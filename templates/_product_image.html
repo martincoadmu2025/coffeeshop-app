@@ -1,0 +1,10 @@
+{% macro product_image(item, class_name='product-photo', loading='lazy') -%}
+{%- set drink_name = item.itemName | lower | trim -%}
+{%- if drink_name == 'caramel macchiato' -%}
+<img class="{{ class_name }}" src="{{ url_for('static', filename='caramel-macchiato.webp') }}" alt="Caramel Macchiato topped with caramel drizzle" loading="{{ loading }}" decoding="async">
+{%- elif drink_name == 'americano' -%}
+<img class="{{ class_name }}" src="{{ url_for('static', filename='americano.webp') }}" alt="Freshly brewed Americano in a ceramic cup" loading="{{ loading }}" decoding="async">
+{%- else -%}
+<img class="{{ class_name }} product-photo-fallback" src="{{ url_for('static', filename='coffee-hero.svg') }}" alt="Coffee house illustration for {{ item.itemName }}" loading="{{ loading }}" decoding="async">
+{%- endif -%}
+{%- endmacro %}

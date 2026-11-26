@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 450" role="img" aria-labelledby="title">
+<title id="title">A warm café cup</title>
+<defs>
+  <linearGradient id="cup" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffdf1"/><stop offset="1" stop-color="#e8ddc7"/></linearGradient>
+  <linearGradient id="lid" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfc5a2"/><stop offset="1" stop-color="#bb9a70"/></linearGradient>
+  <linearGradient id="sleeve" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e5c9"/><stop offset="1" stop-color="#d6bd92"/></linearGradient>
+  <filter id="shadow" x="-35%" y="-40%" width="170%" height="180%"><feGaussianBlur stdDeviation="15"/></filter>
+</defs>
+<ellipse cx="255" cy="400" rx="137" ry="23" fill="#061f19" opacity=".25" filter="url(#shadow)"/>
+<circle cx="260" cy="207" r="176" fill="#386b56" opacity=".56"/>
+<circle cx="260" cy="207" r="151" fill="none" stroke="#acc1aa" stroke-width="1" opacity=".27" stroke-dasharray="3 12"/>
+<!-- Floating coffee beans -->
+<g transform="translate(89 190) rotate(-33)"><ellipse rx="16" ry="25" fill="#af8060"/><path d="M0 -22c9 14-8 20 0 44" stroke="#674935" stroke-width="3.2" stroke-linecap="round" fill="none"/></g>
+<g transform="translate(411 128) rotate(28)"><ellipse rx="13" ry="21" fill="#bd9271"/><path d="M0 -18c8 11-7 20 0 36" stroke="#6e513d" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+<g transform="translate(415 333) rotate(45)"><ellipse rx="12" ry="19" fill="#c59a7a"/><path d="M0 -17c8 10-7 15 0 34" stroke="#6c4f3f" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+<!-- Leaf sprigs -->
+<g fill="#a9c1a6"><path d="M75 295c19-25 41-34 65-31-6 25-28 41-65 31Z"/><path d="M89 313c9-27 30-45 56-48" fill="none" stroke="#8ca994" stroke-width="3"/><path d="M90 313c3-24-8-40-30-49-2 22 7 38 30 49Z"/></g>
+<g fill="#a6bfa7"><path d="M390 225c17-30 37-40 62-41-2 24-23 42-62 41Z"/><path d="M397 239c10-17 27-37 55-55" fill="none" stroke="#88ab91" stroke-width="3"/><path d="M399 240c-3-26-19-40-37-43 1 22 14 36 37 43Z"/></g>
+<!-- Steam -->
+<g fill="none" stroke="#d9e2d4" stroke-linecap="round" stroke-width="5" opacity=".85">
+  <path d="M223 75c-16-25 20-31 2-53"/><path d="M264 67c-12-23 18-32 5-48"/><path d="M302 77c-14-21 16-28 3-50"/>
+</g>
+<!-- Cup -->
+<g transform="rotate(8 265 231)">
+  <path d="M162 123h207l-24 229c-2 21-18 38-40 38h-81c-22 0-38-17-40-38L162 123Z" fill="url(#cup)"/>
+  <path d="M163 137h205" stroke="#bdad95" opacity=".4" stroke-width="3"/>
+  <path d="M155 105c0-11 8-20 19-20h181c11 0 19 9 19 20v28H155v-28Z" fill="url(#lid)"/>
+  <rect x="149" y="124" width="231" height="22" rx="9" fill="#eddbbc"/>
+  <path d="M178 204h169l-12 110H190l-12-110Z" fill="url(#sleeve)"/>
+  <path d="M178 204h169l-2 17H180Z" fill="#b99e78" opacity=".35"/>
+  <circle cx="263" cy="259" r="37" fill="#1e5442"/>
+  <g fill="none" stroke="#e7d4ae" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(243 243)"><path d="M4 13h28v5c0 10-6 16-14 16S4 28 4 18v-5Z"/><path d="M32 16h5c6 0 6 9 0 9h-5"/><path d="M12 -3v9M21 -6v12"/></g>
+  <path d="M193 338c2 24 13 37 35 41" fill="none" stroke="#fff" stroke-width="8" opacity=".25" stroke-linecap="round"/>
+</g>
+<circle cx="112" cy="99" r="3" fill="#e3cfaa" opacity=".75"/><circle cx="411" cy="256" r="4" fill="#e3cfaa" opacity=".55"/><circle cx="357" cy="64" r="2.8" fill="#e3cfaa" opacity=".8"/>
+</svg>

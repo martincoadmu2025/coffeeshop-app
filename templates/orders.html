@@ -1,35 +1,16 @@
 {% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% from "_status.html" import badge %}
+{% block title %}Orders{% endblock %}
 {% block content %}
-<h2>Orders</h2>
-<p class="ap">Access Pattern 10: List all orders for a given duration</p>
-
-<form method="get">
-    <label>From:</label>
-    <input type="date" name="start" value="{{ start }}">
-    <label>To:</label>
-    <input type="date" name="end" value="{{ end }}">
-    <button type="submit">Search</button>
-</form>
-
-<table>
-    <tr>
-        <th>Order ID</th>
-        <th>Order Date</th>
-        <th>Cashier</th>
-        <th>Status</th>
-        <th>Total</th>
-    </tr>
-    {% for order in orders %}
-    <tr>
-        <td><a href="{{ url_for('view_order', orderId=order._id) }}">{{ order._id }}</a></td>
-        <td>{{ order.orderDateTime | phtime }}</td>
-        <td>{{ order.cashierName }}</td>
-        <td><span class="status {{ order.status }}">{{ order.status }}</span></td>
-        <td>&#8369;{{ order.totalAmount }}</td>
-    </tr>
-    {% else %}
-    <tr><td colspan="5">No orders found for these dates.</td></tr>
-    {% endfor %}
-</table>
-<p>Total orders: {{ orders | length }}</p>
+<div class="page-heading"><span class="eyebrow">EVERY ORDER COUNTS</span><h1>Order history.</h1><p>Find past orders and see where each one stands.</p></div>
+<section class="filter-surface">
+    <form method="get" class="date-filter"><div class="date-field"><label for="start">From</label><input id="start" type="date" name="start" value="{{ start }}" required></div><div class="date-field"><label for="end">To</label><input id="end" type="date" name="end" value="{{ end }}" required></div><button type="submit" class="button button-primary button-small">{{ icon('search', 16) }} Find orders</button></form>
+</section>
+<div class="listing-heading"><h2>Orders</h2><span>{{ orders | length }} found</span></div>
+<section class="surface table-scroll"><table class="data-table"><thead><tr><th>Order</th><th>Placed on</th><th>Cashier</th><th>Status</th><th>Total</th><th></th></tr></thead><tbody>
+{% for order in orders %}
+<tr><td><a class="table-link" href="{{ url_for('view_order', orderId=order._id) }}">{{ order._id }}</a></td><td class="cell-muted">{{ order.orderDateTime | phtime }}</td><td>{{ order.cashierName }}</td><td>{{ badge(order.status) }}</td><td class="cell-strong">&#8369;{{ "%.2f"|format(order.totalAmount) }}</td><td><a class="table-arrow" href="{{ url_for('view_order', orderId=order._id) }}" aria-label="Open order {{ order._id }}">{{ icon('chevron', 19) }}</a></td></tr>
+{% else %}<tr><td colspan="6"><div class="empty-inline">{{ icon('receipt', 22) }} No orders found for these dates.</div></td></tr>{% endfor %}
+</tbody></table></section>
 {% endblock %}

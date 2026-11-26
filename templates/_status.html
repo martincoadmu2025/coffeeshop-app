@@ -1,0 +1,12 @@
+{% from '_icons.html' import icon %}
+{% macro badge(status, large=False) -%}
+<span class="pill status-pill pill-{{ status | lower }}{% if large %} status-large{% endif %}">
+{%- if status == 'Completed' -%}
+{{ icon('check', 14) }}
+{%- elif status == 'Paid' -%}
+{{ icon('wallet', 14) }}
+{%- else -%}
+{{ icon('clock', 14) }}
+{%- endif -%}
+<span>{{ status }}</span></span>
+{%- endmacro %}

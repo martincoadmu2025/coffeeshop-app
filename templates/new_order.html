@@ -1,39 +1,39 @@
 {% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% from "_product_image.html" import product_image %}
+{% from "_category_picker.html" import category_picker %}
+{% block title %}New order{% endblock %}
 {% block content %}
-<h2>New Order</h2>
-<p class="ap">Access Pattern 4: Create order with line items
-(item availability is checked first using Access Patterns 2 and 3)</p>
-
-<form method="get">
-    <label>Category:</label>
-    <input type="text" name="category" value="{{ category }}">
-    <button type="submit">Show items</button>
-</form>
-
-<form method="post" action="{{ url_for('new_order', category=category) }}">
-    <label>Cashier Name:</label>
-    <input type="text" name="cashierName" required>
-
-    <table>
-        <tr>
-            <th>Item Name</th>
-            <th>Price</th>
-            <th>Availability</th>
-            <th>Quantity</th>
-        </tr>
-        {% for item in items %}
-        <tr {% if not item.available %}class="low"{% endif %}>
-            <td>{{ item.itemName }}</td>
-            <td>&#8369;{{ item.price }}</td>
-            <td>{{ "Available" if item.available else "Not enough stock" }}</td>
-            <td><input type="number" name="qty_{{ item._id }}" value="0" min="0" class="qty"
-                {% if not item.available %}disabled{% endif %}></td>
-        </tr>
-        {% else %}
-        <tr><td colspan="4">No available items in this category.</td></tr>
-        {% endfor %}
-    </table>
-
-    <button type="submit">Create Order</button>
+<div class="page-heading"><span class="eyebrow">FRESHLY MADE</span><h1>New order.</h1><p>Choose your drinks, enter the quantities, and send the order on its way.</p></div>
+{{ category_picker(category, 'new_order', 'order-category') }}
+<form method="post" action="{{ url_for('new_order', category=category) }}" id="new-order-form">
+    <div class="checkout-grid">
+        <section>
+            <div class="listing-heading"><h2>{{ category }}</h2><span>Choose quantities</span></div>
+            <div class="order-items">
+                {% for item in items %}
+                <article class="order-item{% if not item.available %} order-item-unavailable{% endif %}">
+                    <div class="order-item-art">{{ product_image(item, 'order-item-photo') }}</div>
+                    <div class="order-item-details"><h3>{{ item.itemName }}</h3><span class="price-muted">&#8369;{{ "%.2f"|format(item.price) }} each</span><span class="availability {% if item.available %}available{% else %}unavailable{% endif %}">{{ 'Available' if item.available else 'Out of stock' }}</span></div>
+                    <div class="quantity-control"><label for="qty-{{ item._id }}">Quantity</label><div class="quantity-stepper"><button type="button" class="stepper-button" aria-label="Decrease {{ item.itemName }} quantity" data-step="-1" {% if not item.available %}disabled{% endif %}>−</button><input id="qty-{{ item._id }}" type="number" name="qty_{{ item._id }}" value="0" min="0" step="1" inputmode="numeric" class="qty" data-price="{{ item.price }}" {% if not item.available %}disabled{% endif %}><button type="button" class="stepper-button" aria-label="Increase {{ item.itemName }} quantity" data-step="1" {% if not item.available %}disabled{% endif %}>+</button></div></div>
+                </article>
+                {% else %}<div class="empty-state"><span class="empty-icon">{{ icon('coffee', 30) }}</span><h3>No items to order yet.</h3><p>Choose another category to keep browsing.</p></div>{% endfor %}
+            </div>
+        </section>
+        <aside class="checkout-sidebar">
+            <div class="checkout-card">
+                <span class="eyebrow eyebrow-light">ORDER DETAILS</span>
+                <h2>Almost ready.</h2>
+                <p>Just a few details before the first sip.</p>
+                <label for="cashierName" class="form-label">Cashier name</label>
+                <input type="text" name="cashierName" id="cashierName" placeholder="Enter your name" autocomplete="name" required>
+                <div class="checkout-divider"></div>
+                <div class="checkout-summary-row"><span>Selected items</span><strong id="order-count">0</strong></div>
+                <div class="checkout-summary-row checkout-summary-total"><span>Estimated total</span><strong id="order-total">&#8369;0.00</strong></div>
+                <button type="submit" class="button button-cream button-full">Create order {{ icon('arrow-right', 17) }}</button>
+                <small class="checkout-footnote">Your order is checked for stock availability at checkout.</small>
+            </div>
+        </aside>
+    </div>
 </form>
 {% endblock %}

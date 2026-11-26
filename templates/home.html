@@ -1,28 +1,66 @@
 {% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Home{% endblock %}
 {% block content %}
-<h2>Welcome!</h2>
-<p>Choose what you want to do:</p>
+<section class="hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+        <span class="eyebrow eyebrow-light"><span class="eyebrow-dot"></span> YOUR DAILY COFFEE COMPANION</span>
+        <h1 id="hero-title">A little more joy<br>in every <em>cup.</em></h1>
+        <p>Welcome back to the coffee bar. Keep orders moving, drinks brewing, and your day running smoothly.</p>
+        <div class="hero-actions">
+            <a class="button button-cream" href="{{ url_for('new_order') }}">Start an order {{ icon('arrow-right', 17) }}</a>
+            <a class="hero-secondary" href="{{ url_for('menu') }}">Explore the menu {{ icon('arrow-right', 17) }}</a>
+        </div>
+    </div>
+    <div class="hero-art"><img src="{{ url_for('static', filename='coffee-hero.svg') }}" alt="Illustration of a warm takeaway coffee cup surrounded by coffee beans and leaves"></div>
+</section>
 
-<div class="cards">
-    <a class="card" href="{{ url_for('menu') }}">
-        <h3>Menu</h3>
-        <p>View menu items by category, their ingredients and current stock.</p>
-    </a>
-    <a class="card" href="{{ url_for('new_order') }}">
-        <h3>New Order</h3>
-        <p>Cashier: create a new order and record the payment.</p>
-    </a>
-    <a class="card" href="{{ url_for('barista') }}">
-        <h3>Barista Queue</h3>
-        <p>Barista: see paid orders to prepare and mark them as completed.</p>
-    </a>
-    <a class="card" href="{{ url_for('inventory') }}">
-        <h3>Inventory</h3>
-        <p>Manager: see ingredients that are below the restock threshold.</p>
-    </a>
-    <a class="card" href="{{ url_for('orders') }}">
-        <h3>Orders</h3>
-        <p>Manager: list all orders within a date range.</p>
-    </a>
-</div>
+<section class="workflow-strip" aria-label="Your coffee shop workflow">
+    <div class="workflow-step"><span>01</span><strong>Take the order</strong><small>Pick drinks & quantities</small></div>
+    <div class="workflow-connector" aria-hidden="true">{{ icon('arrow-right', 17) }}</div>
+    <div class="workflow-step"><span>02</span><strong>Receive payment</strong><small>Confirm at checkout</small></div>
+    <div class="workflow-connector" aria-hidden="true">{{ icon('arrow-right', 17) }}</div>
+    <div class="workflow-step"><span>03</span><strong>Make the coffee</strong><small>Hand it to the barista</small></div>
+</section>
+<section class="home-section" aria-labelledby="workspace-heading">
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow">THE DAILY ROUTINE</span>
+            <h2 id="workspace-heading">Everything in its place.</h2>
+            <p>Pick up right where you left off.</p>
+        </div>
+    </div>
+    <div class="quick-grid">
+        <a class="quick-card quick-card-featured" href="{{ url_for('new_order') }}">
+            <span class="quick-icon">{{ icon('plus', 24) }}</span>
+            <span class="quick-text"><strong>New order</strong><small>Start a fresh customer order</small></span>
+            <span class="quick-arrow">{{ icon('arrow-right', 19) }}</span>
+        </a>
+        <a class="quick-card" href="{{ url_for('menu') }}">
+            <span class="quick-icon">{{ icon('coffee', 24) }}</span>
+            <span class="quick-text"><strong>Browse menu</strong><small>Find coffee & café favorites</small></span>
+            <span class="quick-arrow">{{ icon('arrow-right', 19) }}</span>
+        </a>
+        <a class="quick-card" href="{{ url_for('barista') }}">
+            <span class="quick-icon">{{ icon('clock', 24) }}</span>
+            <span class="quick-text"><strong>Barista queue</strong><small>Prepare the next orders</small></span>
+            <span class="quick-arrow">{{ icon('arrow-right', 19) }}</span>
+        </a>
+        <a class="quick-card" href="{{ url_for('inventory') }}">
+            <span class="quick-icon">{{ icon('package', 24) }}</span>
+            <span class="quick-text"><strong>Inventory</strong><small>See what needs restocking</small></span>
+            <span class="quick-arrow">{{ icon('arrow-right', 19) }}</span>
+        </a>
+        <a class="quick-card" href="{{ url_for('orders') }}">
+            <span class="quick-icon">{{ icon('receipt', 24) }}</span>
+            <span class="quick-text"><strong>Order history</strong><small>Review recent transactions</small></span>
+            <span class="quick-arrow">{{ icon('arrow-right', 19) }}</span>
+        </a>
+    </div>
+</section>
+<section class="home-bottom" aria-label="Coffee house note">
+    <span class="bottom-icon">{{ icon('leaf', 25) }}</span>
+    <div><strong>Made for the little moments.</strong><p>One organized shift at a time, from the first espresso to the last order.</p></div>
+    <a href="{{ url_for('barista') }}">See the barista queue {{ icon('arrow-right', 17) }}</a>
+</section>
 {% endblock %}

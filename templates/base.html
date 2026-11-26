@@ -1,34 +1,60 @@
+{% from "_icons.html" import icon %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coffee Shop Ordering System</title>
+    <meta name="theme-color" content="#173f35">
+    <meta name="description" content="Brew & Bean — a welcoming home for your café's daily orders, menu and inventory.">
+    <title>{% block title %}Brew & Bean{% endblock %} | Coffee House</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script defer src="{{ url_for('static', filename='app.js') }}"></script>
 </head>
 <body>
-    <header>
-        <h1>&#9749; Coffee Shop Ordering System</h1>
-        <nav>
-            <a href="{{ url_for('home') }}">Home</a>
-            <a href="{{ url_for('menu') }}">Menu</a>
-            <a href="{{ url_for('new_order') }}">New Order</a>
-            <a href="{{ url_for('barista') }}">Barista Queue</a>
-            <a href="{{ url_for('inventory') }}">Inventory</a>
-            <a href="{{ url_for('orders') }}">Orders</a>
-        </nav>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="{{ url_for('home') }}" aria-label="Brew & Bean home">
+                <span class="brand-icon">{{ icon('coffee', 25) }}</span>
+                <span class="brand-text"><strong>Brew & Bean</strong><small>COFFEE HOUSE</small></span>
+            </a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="{{ url_for('home') }}" class="nav-link{% if request.endpoint == 'home' %} active{% endif %}" {% if request.endpoint == 'home' %}aria-current="page"{% endif %}>Home</a>
+                <a href="{{ url_for('menu') }}" class="nav-link{% if request.endpoint in ['menu', 'menu_item'] %} active{% endif %}" {% if request.endpoint in ['menu', 'menu_item'] %}aria-current="page"{% endif %}>Menu</a>
+                <a href="{{ url_for('barista') }}" class="nav-link{% if request.endpoint == 'barista' %} active{% endif %}" {% if request.endpoint == 'barista' %}aria-current="page"{% endif %}>Barista</a>
+                <a href="{{ url_for('inventory') }}" class="nav-link{% if request.endpoint == 'inventory' %} active{% endif %}" {% if request.endpoint == 'inventory' %}aria-current="page"{% endif %}>Inventory</a>
+                <a href="{{ url_for('orders') }}" class="nav-link{% if request.endpoint in ['orders', 'view_order'] %} active{% endif %}" {% if request.endpoint in ['orders', 'view_order'] %}aria-current="page"{% endif %}>Orders</a>
+            </nav>
+            <a class="header-cta" href="{{ url_for('new_order') }}">{{ icon('plus', 17) }} <span>New order</span></a>
+        </div>
     </header>
 
-    <main>
+    <main class="page-shell" id="main-content">
         {% with messages = get_flashed_messages() %}
-            {% for message in messages %}
-                <p class="message">{{ message }}</p>
-            {% endfor %}
+            {% if messages %}
+                <div class="flash-stack" role="status" aria-live="polite">
+                    {% for message in messages %}
+                    {% set message_lower = message | lower %}
+                    {% set is_problem = 'not enough stock' in message_lower or 'less than the total' in message_lower or 'not found' in message_lower or 'please enter' in message_lower %}
+                    {% set is_success = 'created.' in message_lower or 'payment recorded' in message_lower or 'completed.' in message_lower %}
+                    <div class="flash-message {% if is_problem %}flash-warning{% elif is_success %}flash-success{% else %}flash-info{% endif %}" role="{{ 'alert' if is_problem else 'status' }}">
+                        <span class="flash-icon">{{ icon('alert' if is_problem else 'check' if is_success else 'coffee', 19) }}</span>
+                        <div class="flash-copy"><strong>{{ 'Please check your order' if is_problem else 'Success!' if is_success else 'A quick note' }}</strong><span>{{ message }}</span></div>
+                        <button type="button" class="flash-dismiss" aria-label="Dismiss message" data-dismiss-message>&times;</button>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         {% endwith %}
 
         {% block content %}{% endblock %}
     </main>
 
-    <footer>CSCI 112 Final Project - Group 5</footer>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <span class="footer-brand">{{ icon('coffee', 16) }} Brew & Bean</span>
+            <span>Good coffee. Better days.</span>
+        </div>
+    </footer>
 </body>
 </html>
