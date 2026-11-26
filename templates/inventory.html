@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Inventory</h2>
+<p class="ap">Access Pattern 9: List ingredients below restock threshold</p>
+
+<table>
+    <tr>
+        <th>Ingredient ID</th>
+        <th>Ingredient</th>
+        <th>Current Stock</th>
+        <th>Restock Threshold</th>
+        <th>Last Updated</th>
+    </tr>
+    {% for ing in lowStock %}
+    <tr class="low">
+        <td>{{ ing._id }}</td>
+        <td>{{ ing.ingredientName }}</td>
+        <td>{{ ing.currentStock }} {{ ing.unit }}</td>
+        <td>{{ ing.restockThreshold }} {{ ing.unit }}</td>
+        <td>{{ ing.lastUpdated | phtime }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">All ingredients are above the restock threshold.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>New Order</h2>
+<p class="ap">Access Pattern 4: Create order with line items
+(item availability is checked first using Access Patterns 2 and 3)</p>
+
+<form method="get">
+    <label>Category:</label>
+    <input type="text" name="category" value="{{ category }}">
+    <button type="submit">Show items</button>
+</form>
+
+<form method="post" action="{{ url_for('new_order', category=category) }}">
+    <label>Cashier Name:</label>
+    <input type="text" name="cashierName" required>
+
+    <table>
+        <tr>
+            <th>Item Name</th>
+            <th>Price</th>
+            <th>Availability</th>
+            <th>Quantity</th>
+        </tr>
+        {% for item in items %}
+        <tr {% if not item.available %}class="low"{% endif %}>
+            <td>{{ item.itemName }}</td>
+            <td>&#8369;{{ item.price }}</td>
+            <td>{{ "Available" if item.available else "Not enough stock" }}</td>
+            <td><input type="number" name="qty_{{ item._id }}" value="0" min="0" class="qty"
+                {% if not item.available %}disabled{% endif %}></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">No available items in this category.</td></tr>
+        {% endfor %}
+    </table>
+
+    <button type="submit">Create Order</button>
+</form>
+{% endblock %}

@@ -1,0 +1,147 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f7f1e8;
+    color: #333;
+    margin: 0;
+}
+
+header {
+    background-color: #5b3a29;
+    color: white;
+    padding: 15px 30px;
+}
+
+header h1 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+h2 {
+    color: #5b3a29;
+    margin-bottom: 5px;
+}
+
+.ap {
+    color: #8a6a55;
+    font-style: italic;
+    margin-top: 0;
+}
+
+.message {
+    background-color: #fff3cd;
+    border: 1px solid #e0c36b;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.note {
+    color: #777;
+    font-size: 14px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    margin: 15px 0;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #c8a27c;
+    color: white;
+}
+
+tr.low td {
+    background-color: #fde2e2;
+}
+
+form {
+    margin: 10px 0;
+}
+
+input, select {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+input.qty {
+    width: 60px;
+}
+
+button {
+    background-color: #5b3a29;
+    color: white;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #7a5038;
+}
+
+.status {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: white;
+}
+
+.Pending { background-color: #999; }
+.Paid { background-color: #d08a2e; }
+.Completed { background-color: #3c8d4f; }
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    width: 250px;
+    text-decoration: none;
+    color: #333;
+}
+
+.card:hover {
+    border-color: #5b3a29;
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #5b3a29;
+}
+
+footer {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+    padding: 20px;
+}

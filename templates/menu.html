@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Menu</h2>
+<p class="ap">Access Pattern 1: List menu items by category</p>
+
+<form method="get">
+    <label>Category:</label>
+    <input type="text" name="category" value="{{ category }}">
+    <button type="submit">Search</button>
+</form>
+
+<table>
+    <tr>
+        <th>Item ID</th>
+        <th>Item Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th></th>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{ item._id }}</td>
+        <td>{{ item.itemName }}</td>
+        <td>{{ item.category }}</td>
+        <td>&#8369;{{ item.price }}</td>
+        <td><a href="{{ url_for('menu_item', menuItemId=item._id) }}">View details</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">No available items in this category.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

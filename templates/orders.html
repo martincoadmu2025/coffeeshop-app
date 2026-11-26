@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Orders</h2>
+<p class="ap">Access Pattern 10: List all orders for a given duration</p>
+
+<form method="get">
+    <label>From:</label>
+    <input type="date" name="start" value="{{ start }}">
+    <label>To:</label>
+    <input type="date" name="end" value="{{ end }}">
+    <button type="submit">Search</button>
+</form>
+
+<table>
+    <tr>
+        <th>Order ID</th>
+        <th>Order Date</th>
+        <th>Cashier</th>
+        <th>Status</th>
+        <th>Total</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td><a href="{{ url_for('view_order', orderId=order._id) }}">{{ order._id }}</a></td>
+        <td>{{ order.orderDateTime | phtime }}</td>
+        <td>{{ order.cashierName }}</td>
+        <td><span class="status {{ order.status }}">{{ order.status }}</span></td>
+        <td>&#8369;{{ order.totalAmount }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">No orders found for these dates.</td></tr>
+    {% endfor %}
+</table>
+<p>Total orders: {{ orders | length }}</p>
+{% endblock %}

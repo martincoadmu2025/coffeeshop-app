@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Welcome!</h2>
+<p>Choose what you want to do:</p>
+
+<div class="cards">
+    <a class="card" href="{{ url_for('menu') }}">
+        <h3>Menu</h3>
+        <p>View menu items by category, their ingredients and current stock.</p>
+    </a>
+    <a class="card" href="{{ url_for('new_order') }}">
+        <h3>New Order</h3>
+        <p>Cashier: create a new order and record the payment.</p>
+    </a>
+    <a class="card" href="{{ url_for('barista') }}">
+        <h3>Barista Queue</h3>
+        <p>Barista: see paid orders to prepare and mark them as completed.</p>
+    </a>
+    <a class="card" href="{{ url_for('inventory') }}">
+        <h3>Inventory</h3>
+        <p>Manager: see ingredients that are below the restock threshold.</p>
+    </a>
+    <a class="card" href="{{ url_for('orders') }}">
+        <h3>Orders</h3>
+        <p>Manager: list all orders within a date range.</p>
+    </a>
+</div>
+{% endblock %}

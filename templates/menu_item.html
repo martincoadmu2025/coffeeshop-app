@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ item.itemName }}</h2>
+<p class="ap">Access Pattern 2: Get menu item with ingredients and quantities</p>
+
+<p><b>Item ID:</b> {{ item._id }}<br>
+<b>Category:</b> {{ item.category }}<br>
+<b>Price:</b> &#8369;{{ item.price }}<br>
+<b>Available:</b> {{ "Yes" if item.isAvailable else "No" }}</p>
+
+<table>
+    <tr>
+        <th>Ingredient ID</th>
+        <th>Ingredient</th>
+        <th>Quantity Required</th>
+    </tr>
+    {% for ing in item.ingredients %}
+    <tr>
+        <td>{{ ing.ingredientId }}</td>
+        <td>{{ ing.ingredientName }}</td>
+        <td>{{ ing.quantityRequired }} {{ ing.unit }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Current Stock of Ingredients</h3>
+<p class="ap">Access Pattern 3: Get current stock of ingredients</p>
+
+<table>
+    <tr>
+        <th>Ingredient</th>
+        <th>Current Stock</th>
+        <th>Restock Threshold</th>
+        <th>Last Updated</th>
+    </tr>
+    {% for s in stocks %}
+    <tr {% if s.currentStock < s.restockThreshold %}class="low"{% endif %}>
+        <td>{{ s.ingredientName }}</td>
+        <td>{{ s.currentStock }} {{ s.unit }}</td>
+        <td>{{ s.restockThreshold }} {{ s.unit }}</td>
+        <td>{{ s.lastUpdated | phtime }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p><a href="{{ url_for('menu', category=item.category) }}">&larr; Back to menu</a></p>
+{% endblock %}

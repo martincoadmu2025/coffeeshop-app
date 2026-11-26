@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Barista Queue</h2>
+<p class="ap">Access Pattern 8: List and sort paid but unprepared orders (oldest first)</p>
+
+<table>
+    <tr>
+        <th>Order ID</th>
+        <th>Order Date</th>
+        <th>Items</th>
+        <th>Total</th>
+        <th></th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td><a href="{{ url_for('view_order', orderId=order._id) }}">{{ order._id }}</a></td>
+        <td>{{ order.orderDateTime | phtime }}</td>
+        <td>
+            {% for li in order.lineItems %}
+                {{ li.quantity }} x {{ li.itemName }}<br>
+            {% endfor %}
+        </td>
+        <td>&#8369;{{ order.totalAmount }}</td>
+        <td>
+            <form method="post" action="{{ url_for('complete_order', orderId=order._id) }}">
+                <button type="submit">Mark as Completed</button>
+            </form>
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">No orders to prepare.</td></tr>
+    {% endfor %}
+</table>
+
+<p class="note">Clicking "Mark as Completed" runs Access Pattern 6 (deduct from ingredients inventory)
+and Access Pattern 7 (update order status).</p>
+{% endblock %}
