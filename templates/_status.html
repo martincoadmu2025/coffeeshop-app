@@ -3,6 +3,8 @@
 <span class="pill status-pill pill-{{ status | lower }}{% if large %} status-large{% endif %}">
 {%- if status == 'Completed' -%}
 {{ icon('check', 14) }}
+{%- elif status == 'Cancelled' -%}
+{{ icon('x', 14) }}
 {%- elif status == 'Paid' -%}
 {{ icon('wallet', 14) }}
 {%- else -%}

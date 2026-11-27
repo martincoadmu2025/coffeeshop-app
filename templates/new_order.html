@@ -6,7 +6,7 @@
 {% block content %}
 <div class="page-heading"><span class="eyebrow">FRESHLY MADE</span><h1>New order.</h1><p>Choose your drinks, enter the quantities, and send the order on its way.</p></div>
 {{ category_picker(category, 'new_order', 'order-category') }}
-<form method="post" action="{{ url_for('new_order', category=category) }}" id="new-order-form">
+<form method="post" action="{{ url_for('new_order', category=category) }}" id="new-order-form" data-submit-once>
     <div class="checkout-grid">
         <section>
             <div class="listing-heading"><h2>{{ category }}</h2><span>Choose quantities</span></div>

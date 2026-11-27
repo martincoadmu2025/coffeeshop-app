@@ -11,6 +11,18 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () { window.print(); });
     });
 
+    // Lock a form's submit button after the first click, so a double-click
+    // cannot send the same request twice (the server also checks this).
+    document.querySelectorAll('form[data-submit-once]').forEach(function (form) {
+        form.addEventListener('submit', function () {
+            setTimeout(function () {
+                form.querySelectorAll('button[type="submit"]').forEach(function (button) {
+                    button.disabled = true;
+                });
+            }, 0);
+        });
+    });
+
     const orderForm = document.getElementById('new-order-form');
     if (!orderForm) return;
 

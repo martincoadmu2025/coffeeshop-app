@@ -508,3 +508,14 @@ a.category-pill:hover { background: #e9f0e8; border-color: #a9c2ad; transform: t
     .receipt-card .receipt-thanks { margin-top: 28px; }
     .receipt-card, .receipt-card * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+/* Cancel order (diagram: "Order Cancelled" endings) */
+.button-danger { background: transparent; border-color: #e3c2b6; color: #9a3f22; }
+.button-danger:hover { background: #fbefea; }
+.cancel-order { margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--line); display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.cancel-order p { margin: 0 !important; color: var(--muted); }
+.cancelled-card { border-color: #ecd3c9; }
+.pill-cancelled, .status-pill.pill-cancelled { background: #f8e9e3; color: #9a3f22; }
+.status-steps .status-step.cancelled .status-step-dot { color: #fff; background: #b4583a; border-color: #b4583a; }
+/* Submit-once: a form's button is locked after the first click */
+.button[disabled] { opacity: .6; cursor: progress; transform: none; }

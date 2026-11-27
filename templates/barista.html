@@ -10,7 +10,7 @@
         <div class="queue-top"><div><span class="eyebrow">UP NEXT</span><h2><a href="{{ url_for('view_order', orderId=order._id) }}">{{ order._id }}</a></h2></div>{{ badge('Paid') }}</div>
         <div class="queue-time">{{ icon('clock', 17) }} {{ order.orderDateTime | phtime }}</div>
         <div class="queue-lines">{% for li in order.lineItems %}<div class="queue-line"><span class="queue-quantity">{{ li.quantity }}×</span><span>{{ li.itemName }}</span></div>{% endfor %}</div>
-        <div class="queue-bottom"><strong>&#8369;{{ "%.2f"|format(order.totalAmount) }}</strong><form method="post" action="{{ url_for('complete_order', orderId=order._id) }}"><button type="submit" class="button button-primary">{{ icon('check', 18) }} Complete order</button></form></div>
+        <div class="queue-bottom"><strong>&#8369;{{ "%.2f"|format(order.totalAmount) }}</strong><form method="post" action="{{ url_for('complete_order', orderId=order._id) }}" data-submit-once><button type="submit" class="button button-primary">{{ icon('check', 18) }} Complete order</button></form></div>
     </article>
     {% else %}
     <div class="empty-state full-grid"><span class="empty-icon">{{ icon('check', 31) }}</span><h3>All caught up!</h3><p>There are no paid orders waiting to be prepared.</p><a class="button button-outline" href="{{ url_for('new_order') }}">Start a new order</a></div>
