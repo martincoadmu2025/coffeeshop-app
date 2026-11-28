@@ -1,9 +1,7 @@
 # CSCI 112 - Final Project (Group 5)
 # Coffee Shop Ordering System
 # Queries for the 10 access patterns (from Milestone 3).
-# The only change from the milestone code is that the hard-coded values
-# (ex. "Hot Coffee", "order_00003") are now passed in from the web page,
-# and the results are returned instead of printed.
+
 
 from datetime import datetime, timezone, timedelta
 

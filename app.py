@@ -1,16 +1,13 @@
 # CSCI 112 - Final Project (Group 5)
-# Coffee Shop Ordering System - Flask web app
-#
-# How to run:
-#   python seed.py   (loads the sample data, only needed once)
-#   python app.py    (then open http://127.0.0.1:5000 in your browser)
+# Coffee Shop Ordering System 
+
 
 import math
 import threading
 from datetime import datetime, timedelta, timezone
 
 import pymongo
-from flask import * #Flask, flash, redirect, render_template, request, url_for
+from flask import * 
 import queries
 
 #MONGO_URI = "mongodb://localhost:27017/"
@@ -22,7 +19,7 @@ conn = pymongo.MongoClient(MONGO_URI)
 db = conn["coffeeshop"]
 
 
-# shows the dates in Philippine time (MongoDB saves them in UTC)
+
 @app.template_filter("phtime")
 def phtime(value):
     if value is None:
@@ -233,11 +230,6 @@ def barista():
 
 # Access Pattern 6 - Deduct from ingredients inventory
 # Access Pattern 7 - Update order status
-# Only a Paid order that is still waiting in the barista queue can be completed.
-# A double-click, the back button or a refresh sends the same request again;
-# by then the order is already Completed, so it is skipped and the inventory
-# is NOT deducted a second time. The lock makes two requests that arrive at the
-# same moment (a fast double-click) run one after the other, not together.
 completeLock = threading.Lock()
 
 
